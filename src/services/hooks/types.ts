@@ -16,6 +16,10 @@ export type Book = {
     viewability: string;
     webReaderLink: string;
   };
+  imageLinks: {
+    smallThumbnail: string;
+    thumbnail: string;
+  };
   etag: string;
   kind: string;
   selfLink: string;
@@ -25,20 +29,30 @@ export type Book = {
     saleability: string;
   };
   volumeInfo: {
-    title: string;
+    allowAnonLogging: boolean;
     authors: string[];
-    publisher: string;
-    publishedDate: string;
+    averageRating: number;
+    canonicalVolumeLink: string;
+    categories: string[];
+    contentVersion: string;
     description: string;
-
     industryIdentifiers: {
       type: string;
       identifier: string;
     }[];
+    infoLink: string;
+    language: string;
+    maturityRating: string;
+    pageCount: number;
+    previewLink: string;
+    printType: string;
+    publishedDate: string;
+    ratingsCount: number;
     readingModes: {
       text: boolean;
       image: boolean;
     };
+    title: string;
   };
   searchInfo: {
     textSnippet: string;

@@ -7,7 +7,9 @@ import { queryClient } from "../services/queryClient";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
+      <div className="bg-gray-50">
+        <Component {...pageProps} />
+      </div>
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
