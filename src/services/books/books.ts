@@ -1,11 +1,22 @@
+import { slugify } from "../../utils/slugfy";
 import { api } from "../api";
-import { getBooksByQuery } from "../hooks/useBooks";
+import { Book } from "./types";
 import { GetBookBySearchRequest } from "./types";
 
 const Books = {
   getBooksByQuery: async (props: GetBookBySearchRequest) => {
     const { query, startIndex } = props;
-    return await api.get(`${query}&startIndex=${startIndex}&maxResults=20`);
+    const { data } = await api.get(
+      `${query}&startIndex=${startIndex}&maxResults=20`
+    );
+    const formattedBook = data.items.map((book: Book) => ({
+      ...book,
+      slug: slugify(book.volumeInfo.title),
+    }));
+    return {
+      ...data,
+      items: formattedBook,
+    };
   },
 };
 

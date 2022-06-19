@@ -1,17 +1,14 @@
-import "../styles/global.css";
+import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
-import { QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { queryClient } from "../services/queryClient";
+import "../styles/global.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="bg-gray-900 h-screen">
+    <ChakraProvider>
+      <div className="bg-gray-900 h-full min-h-screen flex self-center">
         <Component {...pageProps} />
       </div>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    </ChakraProvider>
   );
 }
 

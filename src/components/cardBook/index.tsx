@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { Book } from "../../services/hooks/types";
 import { FiHeart, FiStar } from "react-icons/fi";
 import noThumb from "../../images/nothumbnail.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Book } from "../../services/books/types";
 
 interface CardBookProps {
   book?: Book;
@@ -20,14 +20,14 @@ export function CardBook({ book, query }: CardBookProps) {
     });
   }
   return (
-    <div className="flex items-start justify-around p-3 bg-gray-800 shadow-md rounded-md max-w-sm gap-2 relative group text-white">
+    <div className="h-full flex items-start justify-start p-3 bg-gray-800 shadow-md rounded-md max-w-sm gap-2 relative group text-white">
       <div className="absolute bottom-4 right-4 group-hover:block hidden cursor-pointer">
         <FiHeart
           fontSize={25}
-          className="hover:fill-rose-800 hover:text-rose-800"
+          className="hover:fill-pink-500 hover:text-pink-500"
         />
       </div>
-      <div className="object-cover rounded-md">
+      <div className="object-cover rounded-md max-w-[8rem]">
         <img
           src={
             book?.imageLinks?.thumbnail ??
@@ -38,17 +38,17 @@ export function CardBook({ book, query }: CardBookProps) {
       </div>
       <div className="flex flex-col items-start justify-around gap-2">
         <p
-          className="text-lg font-bold cursor-pointer text-gray-50 hover:text-pink-500"
+          className="text-lg font-bold cursor-pointer text-gray-50 hover:text-pink-500 text-ellipsis overflow-hidden"
           onClick={() => handleBookPage(book?.slug)}
         >
           {book?.volumeInfo?.title}
         </p>
         <b className="flex select-none items-center gap-1 text-yellow-500 font-black">
           <FiStar />
-          {book?.volumeInfo.averageRating}
+          {book?.volumeInfo.averageRating ?? "0"}
         </b>
         <span className="text-gray-200">
-          {book?.volumeInfo?.authors.join(", ")}
+          {book?.volumeInfo?.authors?.join(", ")}
         </span>
       </div>
     </div>
