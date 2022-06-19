@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { Router, useRouter } from "next/router";
 import { useEffect } from "react";
 import { CardBook } from "../components/cardBook";
 import Books from "../services/books/books";
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
-      {!isLoading && <CardBook book={data?.items?.[3]} />}
+      {!isLoading && <CardBook book={data?.items?.[0]} query="harry potter" />}
     </div>
   );
 };

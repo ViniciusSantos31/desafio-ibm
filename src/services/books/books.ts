@@ -1,4 +1,5 @@
 import { api } from "../api";
+import { getBooksByQuery } from "../hooks/useBooks";
 import { GetBookBySearchRequest } from "./types";
 
 const Books = {

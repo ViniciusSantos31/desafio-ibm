@@ -57,6 +57,7 @@ export type Book = {
   searchInfo: {
     textSnippet: string;
   };
+  slug: string;
 };
 
 export type GetUserResponse = {
