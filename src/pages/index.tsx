@@ -1,14 +1,16 @@
+import { Spinner } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FiHeart } from "react-icons/fi";
 import Lottie, { Options as LottieOptions } from "react-lottie";
 import animationData from "../animations/typing.json";
 import { CardBook } from "../components/cardBook";
 import { Input } from "../components/input";
 import { Pagination } from "../components/pagination";
-import { Spinner } from "@chakra-ui/react";
 import Books from "../services/books/books";
 import { Book, GetBookResponse } from "../services/books/types";
+import { FavContext } from "../services/hooks/useFav";
+import { QueryContext } from "../services/hooks/useQuery";
 
 const defaultOptions: LottieOptions = {
   loop: true,
@@ -22,14 +24,16 @@ const defaultOptions: LottieOptions = {
 };
 
 const Home: NextPage = () => {
-  const [query, setQuery] = useState("");
-
   const [data, setData] = useState({} as GetBookResponse);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [isFavPage, setIsFavPage] = useState(false);
+  const { favs } = useContext(FavContext);
+  const { query, updateQuery } = useContext(QueryContext);
 
   useEffect(() => {
     if (data) setLoading(true);
+    setIsFavPage(false);
     Books.getBooksByQuery({
       query: query,
       startIndex: page,
@@ -50,10 +54,20 @@ const Home: NextPage = () => {
           <Input
             placeholder="Pesquise um termo"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => updateQuery(e.target.value)}
           />
-          <p className="flex items-center text-white ml-4 group hover:text-pink-500 cursor-pointer font-bold">
-            <FiHeart fontSize={20} className="mr-2 group-hover:fill-pink-500" />
+          <p
+            onClick={() => setIsFavPage(!isFavPage)}
+            className={`flex items-center text-white ml-4 group hover:text-pink-500 cursor-pointer font-bold ${
+              isFavPage && "text-pink-500"
+            }`}
+          >
+            <FiHeart
+              fontSize={20}
+              className={`mr-2 ${
+                isFavPage && "fill-pink-500"
+              } group-hover:fill-pink-500`}
+            />
             Favoritos
           </p>
         </div>
@@ -74,19 +88,29 @@ const Home: NextPage = () => {
           <>
             <div className="w-full text-white flex gap-2 items-center justify-end">
               {loading && <Spinner />}
-              <Pagination
-                onPageChange={setPage}
-                totalCount={data?.totalItems ?? 0}
-                currentPage={page}
-                registersPerPage={20}
-              />
+              {!isFavPage && (
+                <Pagination
+                  onPageChange={setPage}
+                  totalCount={data?.totalItems ?? 0}
+                  currentPage={page}
+                  registersPerPage={20}
+                />
+              )}
             </div>
-            <div className="grid w-full grid-cols-3 gap-4">
-              {data?.items.map((book: Book) => (
-                <CardBook book={book} query={query} key={book.id} />
-              ))}
+            <div className="grid content-between w-full grid-cols-1 gap-4 md:grid-cols-2">
+              {!isFavPage &&
+                data?.items?.map((book: Book) => (
+                  <CardBook book={book} query={query} key={book.id} />
+                ))}
             </div>
           </>
+        )}
+        {isFavPage && (
+          <div className="grid content-between w-full grid-cols-1 gap-4 md:grid-cols-2">
+            {favs.map((book: Book) => (
+              <CardBook book={book} query={query} key={book.id} />
+            ))}
+          </div>
         )}
       </div>
     </div>

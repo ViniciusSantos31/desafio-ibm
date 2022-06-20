@@ -4,9 +4,11 @@ import noThumb from "../../images/nothumbnail.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Book } from "../../services/books/types";
+import { useContext } from "react";
+import { FavContext } from "../../services/hooks/useFav";
 
 interface CardBookProps {
-  book?: Book;
+  book: Book;
   query?: string;
 }
 
@@ -19,19 +21,33 @@ export function CardBook({ book, query }: CardBookProps) {
       query: { slug, startIndex: 1, search: query },
     });
   }
+
+  const { favs, addFav } = useContext(FavContext);
+  const isFav = favs.some((fav) => fav.id === book?.id);
+
+  console.log(book);
+
   return (
-    <div className="h-full flex items-start justify-start p-3 bg-gray-800 shadow-md rounded-md max-w-sm gap-2 relative group text-white">
-      <div className="absolute bottom-4 right-4 group-hover:block hidden cursor-pointer">
+    <div className="h-full w-full flex items-start justify-start p-3 bg-gray-800 shadow-md rounded-md gap-2 relative group text-white">
+      <div
+        onClick={() => addFav(book)}
+        className={`${
+          !isFav && "hidden"
+        } absolute bottom-4 right-4 block cursor-pointer group-hover:block`}
+      >
         <FiHeart
           fontSize={25}
-          className="hover:fill-pink-500 hover:text-pink-500"
+          className={`${
+            isFav && "fill-pink-500 stroke-pink-500"
+          } hover:fill-pink-500 hover:text-pink-500`}
         />
       </div>
-      <div className="object-cover rounded-md max-w-[8rem]">
+      <div className="object-cover rounded-md ">
         <img
+          className="min-w-[8rem] min-h-[8rem]"
           src={
             book?.imageLinks?.thumbnail ??
-            "http://centrodametropole.fflch.usp.br/sites/centrodametropole.fflch.usp.br/files/user_files/livros/imagem/capa-no-book-cover.png"
+            "https://books.google.com.br/googlebooks/images/no_cover_thumb.gif"
           }
           alt={book?.volumeInfo?.title}
         />

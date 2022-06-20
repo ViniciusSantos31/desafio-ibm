@@ -1,17 +1,39 @@
 /* eslint-disable @next/next/no-img-element */
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { FiBook, FiBookmark, FiPenTool, FiStar } from "react-icons/fi";
+import { useContext } from "react";
+import {
+  FiArrowLeft,
+  FiBook,
+  FiBookmark,
+  FiPenTool,
+  FiStar,
+} from "react-icons/fi";
 import Books from "../services/books/books";
 import { Book } from "../services/books/types";
+import { FavContext } from "../services/hooks/useFav";
 
 interface PageBookProps {
   book: Book;
+  query: string;
 }
 
-const PageBook: NextPage<PageBookProps> = ({ book }) => {
+const PageBook: NextPage<PageBookProps> = ({ book, query }) => {
+  const router = useRouter();
+
+  function handleGoBack() {
+    router.back();
+  }
+
   return (
-    <div className="w-screen bg-gray-900 text-white flex p-4 items-start justify-center md:items-center">
+    <div className="w-screen bg-gray-900 text-white flex flex-col p-4 items-start justify-center md:items-center">
+      <header className="w-full flex items-start">
+        <FiArrowLeft
+          fontSize={40}
+          onClick={handleGoBack}
+          className="cursor-pointer hover:stroke-pink-500"
+        />
+      </header>
       <div className="max-w-screen-lg h-full">
         <div className="w-full flex flex-col gap-4 items-center justify-center mb-6 md:flex-row md:items-start ">
           <img
@@ -69,6 +91,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   return {
     props: {
       book,
+      query,
     },
   };
 };
