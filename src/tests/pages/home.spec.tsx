@@ -1,4 +1,4 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, fireEvent } from "@testing-library/react";
 import { useQuery } from "../../services/hooks/useQuery";
 import Home from "../../pages";
 import Books from "../../services/books/books";
@@ -54,5 +54,32 @@ describe("Home page", () => {
   it("should render button to show favorites", () => {
     render(<Home />);
     expect(screen.getByTestId("showFavorites")).toBeInTheDocument();
+  });
+
+  it("should not render fav page", () => {
+    render(<Home />);
+
+    screen.getByTestId("showFavorites");
+    expect(screen.getByTestId("showFavorites")).not.toHaveClass(
+      "text-pink-500"
+    );
+  });
+
+  it("should render fav page", () => {
+    render(<Home />);
+
+    const button = screen.getByTestId("showFavorites");
+    fireEvent.click(button);
+    expect(button).toHaveClass("text-pink-500");
+  });
+
+  it("should render the books", () => {
+    render(<Home />);
+    const button = screen.getByTestId("showFavorites");
+    expect(button).not.toHaveClass("text-pink-500");
+    fireEvent.click(button);
+    expect(button).toHaveClass("text-pink-500");
+    fireEvent.click(button);
+    expect(button).not.toHaveClass("text-pink-500");
   });
 });

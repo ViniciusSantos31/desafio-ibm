@@ -81,7 +81,10 @@ const Home: NextPage = () => {
           </p>
         </div>
         {!!!query && !!data ? (
-          <div className="w-full h-full flex flex-col justify-around items-center">
+          <div
+            data-testid="lottie-container"
+            className="w-full h-full flex flex-col justify-around items-center"
+          >
             <div className="h-full flex flex-col items-center justify-center text-white gap-2">
               <Lottie
                 options={defaultOptions}
