@@ -1,8 +1,4 @@
-import Router from "next/router";
-import { createContext, useEffect, useState } from "react";
-
-import api from "../api";
-import { Book } from "../books/types";
+import { createContext, useContext, useState } from "react";
 
 type QueryContextProps = {
   query: string;
@@ -29,4 +25,12 @@ export function QueryProvider({ children }: QueryProviderProps) {
       {children}
     </QueryContext.Provider>
   );
+}
+
+export function useQuery() {
+  const context = useContext(QueryContext);
+  if (!context) {
+    throw new Error("useQuery must be used within a QueryProvider");
+  }
+  return context;
 }

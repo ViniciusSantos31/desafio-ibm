@@ -1,12 +1,12 @@
 import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { PaginationItem } from "./PaginationItem";
 
-interface PaginationProps {
+type PaginationProps = {
   totalCount: number;
   registersPerPage?: number;
   currentPage?: number;
   onPageChange: (page: number) => void;
-}
+};
 
 const siblingsCount = 1;
 
@@ -39,6 +39,7 @@ export function Pagination({
 
   return (
     <Stack
+      data-testid="pagination"
       direction={["column", "row"]}
       spacing={4}
       my="8"

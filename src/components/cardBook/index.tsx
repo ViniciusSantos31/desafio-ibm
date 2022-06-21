@@ -1,19 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import { FiHeart, FiStar } from "react-icons/fi";
-import noThumb from "../../images/nothumbnail.png";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { Book } from "../../services/books/types";
 import { useContext } from "react";
-import { FavContext } from "../../services/hooks/useFav";
+import { FiHeart, FiStar } from "react-icons/fi";
+import { Book } from "services/books/types";
+import { FavContext, useFav } from "../../services/hooks/useFav";
+import { QueryContext, useQuery } from "../../services/hooks/useQuery";
 
-interface CardBookProps {
+type CardBookProps = {
   book: Book;
-  query?: string;
-}
+};
 
-export function CardBook({ book, query }: CardBookProps) {
+export function CardBook({ book }: CardBookProps) {
   const router = useRouter();
+  const { query } = useQuery();
 
   function handleBookPage(slug?: string) {
     router.push({
@@ -22,15 +21,17 @@ export function CardBook({ book, query }: CardBookProps) {
     });
   }
 
-  const { favs, addFav } = useContext(FavContext);
+  const { favs, addFav } = useFav();
   const isFav = favs.some((fav) => fav.id === book?.id);
 
-  console.log(book);
-
   return (
-    <div className="h-full w-full flex items-start justify-start p-3 bg-gray-800 shadow-md rounded-md gap-2 relative group text-white">
+    <div
+      data-testid="card-book"
+      className="h-full w-full flex items-start justify-start p-3 bg-gray-800 shadow-md rounded-md gap-2 relative group text-white"
+    >
       <div
         onClick={() => addFav(book)}
+        data-testid="fav-icon"
         className={`${
           !isFav && "hidden"
         } absolute bottom-4 right-4 block cursor-pointer group-hover:block`}
@@ -54,6 +55,7 @@ export function CardBook({ book, query }: CardBookProps) {
       </div>
       <div className="flex flex-col items-start justify-around gap-2">
         <p
+          data-testid="book-link"
           className="text-lg font-bold cursor-pointer text-gray-50 hover:text-pink-500 text-ellipsis overflow-hidden"
           onClick={() => handleBookPage(book?.slug)}
         >

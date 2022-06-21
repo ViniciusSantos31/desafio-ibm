@@ -1,22 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext } from "react";
-import {
-  FiArrowLeft,
-  FiBook,
-  FiBookmark,
-  FiPenTool,
-  FiStar,
-} from "react-icons/fi";
+import { FiArrowLeft, FiBook, FiPenTool, FiStar } from "react-icons/fi";
 import Books from "../services/books/books";
 import { Book } from "../services/books/types";
-import { FavContext } from "../services/hooks/useFav";
 
-interface PageBookProps {
+type PageBookProps = {
   book: Book;
   query: string;
-}
+};
 
 const PageBook: NextPage<PageBookProps> = ({ book, query }) => {
   const router = useRouter();
@@ -26,7 +18,10 @@ const PageBook: NextPage<PageBookProps> = ({ book, query }) => {
   }
 
   return (
-    <div className="w-screen bg-gray-900 text-white flex flex-col p-4 items-start justify-center md:items-center">
+    <div
+      data-testid="bookPage"
+      className="w-screen bg-gray-900 text-white flex flex-col p-4 items-start justify-center md:items-center"
+    >
       <header className="w-full flex items-start">
         <FiArrowLeft
           fontSize={40}
@@ -37,6 +32,7 @@ const PageBook: NextPage<PageBookProps> = ({ book, query }) => {
       <div className="max-w-screen-lg h-full">
         <div className="w-full flex flex-col gap-4 items-center justify-center mb-6 md:flex-row md:items-start ">
           <img
+            data-testid="coverImage"
             className="max-w-xs max-h-xs object-fit"
             src={
               book.imageLinks?.thumbnail ??

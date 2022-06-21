@@ -1,10 +1,10 @@
 import { Button } from "@chakra-ui/react";
 
-interface PaginationProps {
+type PaginationProps = {
   isCurrent?: boolean;
   number: number;
   onPageChange: (page: number) => void;
-}
+};
 
 export function PaginationItem({
   isCurrent = false,
@@ -14,6 +14,7 @@ export function PaginationItem({
   if (isCurrent) {
     return (
       <Button
+        data-testid="pagination-item"
         size="sm"
         fontSize="xs"
         w="4"
